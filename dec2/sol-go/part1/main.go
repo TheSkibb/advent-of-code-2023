@@ -6,7 +6,6 @@ import (
 	"log"
 	"os"
 	"strconv"
-	"strings"
 )
 
 type Color struct {
@@ -14,9 +13,13 @@ type Color struct {
     number int
 }
 
+type Set struct {
+    colors []Color
+}
+
 type Game struct {
     gameId int
-    colors []Color
+    sets []Set
 }
 
 func main(){
@@ -55,41 +58,12 @@ func checkGame(line string) Game {
 
 func getColor(colorName string, line string) Color{
 
-    indexes := findAllOccurrencesIndexes(line, colorName)
-    var colorNumber int
-
-    for i := 0; i<len(indexes); i++{
-        firstDigit := string(line[indexes[i]-3])
-        lastDigit := string(line[indexes[i]-2])
-        if firstDigit == " "{
-            colorNumber, _ = strconv.Atoi(lastDigit)
-        }else{
-            colorNumber, _ = strconv.Atoi(firstDigit + lastDigit)
-        }
-    }
-
     color := Color{
         name: colorName,
-        number: colorNumber,
+        number: 0,
     }
 
     return color
-}
-
-//gpt generated, need to revisit this
-func findAllOccurrencesIndexes(s, substr string) []int {
-	indexes := make([]int, 0)
-	idx := 0
-	for {
-		i := strings.Index(s[idx:], substr)
-		if i == -1 {
-			break
-		}
-		idx += i
-		indexes = append(indexes, idx)
-		idx++
-	}
-	return indexes
 }
 
 //reads file and returns all the games
